@@ -1,0 +1,6 @@
+{
+  "name": "TIPRA ELITES",
+  "description": "Official competitive Free Fire India esports organization from Tripura. Built in Tripura. Born to dominate.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
