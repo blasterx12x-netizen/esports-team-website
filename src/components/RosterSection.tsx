@@ -214,43 +214,55 @@ export function RosterSection({ onSelectPlayer }: RosterSectionProps) {
 
               <div className="absolute top-5 right-6 z-20 text-right">
                 <span className="block text-[10px] uppercase tracking-[0.2em] text-zinc-400">
-                  In-Game Character
+                  {leadPlayer.isPlayerPhoto ? 'Player Profile' : 'In-Game Character'}
                 </span>
                 <span className="font-display text-lg font-bold uppercase tracking-[0.14em] text-gradient-crimson-silver">
-                  {leadPlayer.selectedCharacter}
+                  {leadPlayer.isPlayerPhoto ? leadPlayer.ign : leadPlayer.selectedCharacter}
                 </span>
               </div>
 
-              {/* Official Oscar Character Render */}
+              {/* Player Portrait / Artwork */}
               <motion.div
                 initial={{ opacity: 0, y: 24, scale: 0.94 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, amount: 'some' }}
                 transition={{ duration: 0.65, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="relative z-10 flex justify-center items-end -mt-8 lg:-mt-12 h-[330px] sm:h-[380px] lg:h-[440px]"
+                className={`relative z-10 flex justify-center items-end ${
+                  leadPlayer.isPlayerPhoto
+                    ? 'mt-14 mb-2 rounded-xl overflow-hidden bg-black/95 border border-zinc-800/70 h-[310px] sm:h-[360px] lg:h-[390px]'
+                    : '-mt-8 lg:-mt-12 h-[330px] sm:h-[380px] lg:h-[440px]'
+                }`}
               >
                 {!brokenImages[leadPlayer.id] ? (
                   <img
                     src={leadPlayer.characterImage}
-                    alt={`${leadPlayer.selectedCharacter} official Free Fire character artwork for ${leadPlayer.ign}`}
+                    alt={
+                      leadPlayer.isPlayerPhoto
+                        ? `${leadPlayer.ign} — ${leadPlayer.role} official player portrait`
+                        : `${leadPlayer.selectedCharacter} official Free Fire character artwork for ${leadPlayer.ign}`
+                    }
                     loading="lazy"
                     decoding="async"
                     referrerPolicy="no-referrer"
                     onError={() => markBroken(leadPlayer.id)}
-                    className="h-full w-auto max-w-full object-contain object-bottom drop-shadow-[0_18px_36px_rgba(185,28,28,0.38)] transition-transform duration-500 ease-out group-hover:scale-105 group-hover:-translate-y-1"
+                    className={`h-full w-auto max-w-full object-contain transition-transform duration-500 ease-out group-hover:scale-[1.03] ${
+                      leadPlayer.isPlayerPhoto
+                        ? 'object-top'
+                        : 'object-bottom drop-shadow-[0_18px_36px_rgba(185,28,28,0.38)] group-hover:-translate-y-1'
+                    }`}
                   />
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center">
                     <RoleInsignia roleId={leadPlayer.id} className="w-16 h-16 text-red-500" />
                     <span className="mt-3 font-display text-xl uppercase tracking-widest text-zinc-300">
-                      {leadPlayer.selectedCharacter}
+                      {leadPlayer.ign}
                     </span>
                   </div>
                 )}
 
                 {/* Bottom Fade Mask into Dark Card Floor */}
                 <div
-                  className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#0D0D12] to-transparent"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-[#0D0D12] via-[#0D0D12]/55 to-transparent"
                   aria-hidden="true"
                 />
               </motion.div>
@@ -290,7 +302,9 @@ export function RosterSection({ onSelectPlayer }: RosterSectionProps) {
                   </div>
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.16em]">
-                      <span className="text-zinc-400">Active Skill</span>
+                      <span className="text-zinc-300 font-semibold">
+                        {leadPlayer.selectedCharacter}
+                      </span>
                       <span className="text-zinc-600" aria-hidden="true">
                         ·
                       </span>
@@ -395,8 +409,12 @@ export function RosterSection({ onSelectPlayer }: RosterSectionProps) {
                 <span className={`pointer-events-none absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 rounded-tl-xl transition-all duration-300 group-hover:w-7 group-hover:h-7 ${tone.cornerPrimary} z-20`} />
                 <span className={`pointer-events-none absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 rounded-br-xl transition-all duration-300 group-hover:w-7 group-hover:h-7 ${tone.cornerSecondary} z-20`} />
 
-                {/* Top Character Poster Stage (Allows subtle top overlap) */}
-                <div className="relative h-64 sm:h-72 px-4 pt-3 flex items-end justify-center">
+                {/* Top Character Poster Stage */}
+                <div
+                  className={`relative px-4 flex items-end justify-center ${
+                    player.isPlayerPhoto ? 'pt-16 pb-2 min-h-[296px] sm:min-h-[316px]' : 'h-64 sm:h-72 pt-3'
+                  }`}
+                >
                   <CharacterAuraDecoration tone={player.themeTone} />
 
                   {/* Player Index & Character Tag */}
@@ -423,7 +441,7 @@ export function RosterSection({ onSelectPlayer }: RosterSectionProps) {
                     </div>
                   </div>
 
-                  {/* Character Render (Overlaps top card boundary slightly) */}
+                  {/* Character Render / Player Portrait */}
                   <motion.div
                     initial={{ opacity: 0, y: 20, scale: 0.94 }}
                     whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -433,20 +451,30 @@ export function RosterSection({ onSelectPlayer }: RosterSectionProps) {
                       delay: 0.1 + index * 0.08,
                       ease: [0.16, 1, 0.3, 1],
                     }}
-                    className="relative z-10 -mt-8 h-[272px] sm:h-[300px] w-full flex items-end justify-center overflow-hidden"
+                    className={`relative z-10 w-full flex items-end justify-center overflow-hidden ${
+                      player.isPlayerPhoto
+                        ? 'rounded-xl bg-black/95 border border-zinc-800/70 h-[232px] sm:h-[252px]'
+                        : '-mt-8 h-[272px] sm:h-[300px]'
+                    }`}
                   >
                     {!brokenImages[player.id] ? (
                       <img
                         src={player.characterImage}
-                        alt={`${player.selectedCharacter} official Free Fire character artwork for ${player.ign}`}
+                        alt={
+                          player.isPlayerPhoto
+                            ? `${player.ign} — ${player.role} official player portrait`
+                            : `${player.selectedCharacter} official Free Fire character artwork for ${player.ign}`
+                        }
                         loading="lazy"
                         decoding="async"
                         referrerPolicy="no-referrer"
                         onError={() => markBroken(player.id)}
-                        className={`w-auto max-w-full transition-transform duration-500 ease-out group-hover:scale-105 group-hover:-translate-y-1 ${
+                        className={`w-auto max-w-full transition-transform duration-500 ease-out group-hover:scale-105 ${
                           player.characterImagePosition === 'full'
-                            ? 'h-[125%] object-contain object-top translate-y-[12%]'
-                            : 'h-full object-contain object-bottom'
+                            ? 'h-[125%] object-contain object-top translate-y-[12%] group-hover:-translate-y-1'
+                            : player.characterImagePosition === 'portrait'
+                              ? 'h-full object-contain object-top'
+                              : 'h-full object-contain object-bottom group-hover:-translate-y-1'
                         }`}
                       />
                     ) : (
@@ -457,7 +485,7 @@ export function RosterSection({ onSelectPlayer }: RosterSectionProps) {
 
                     {/* Seamless Bottom Gradient Fade into Glass Content */}
                     <div
-                      className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#0B0B10] via-[#0B0B10]/70 to-transparent"
+                      className="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-[#0B0B10] via-[#0B0B10]/65 to-transparent"
                       aria-hidden="true"
                     />
                   </motion.div>

@@ -18,7 +18,8 @@ export interface PlayerProfile {
   selectedCharacter: string;
   characterArchetype: string;
   characterImage: string;
-  characterImagePosition: 'upper' | 'full';
+  characterImagePosition: 'upper' | 'full' | 'portrait';
+  isPlayerPhoto?: boolean;
   skillName: string;
   skillIcon: string;
   skillDescription: string;
@@ -51,8 +52,9 @@ export const ROSTER_PLAYERS: PlayerProfile[] = [
     isLeadVanguard: true,
     selectedCharacter: 'OSCAR',
     characterArchetype: 'Night Vigilante · Entry Breaker',
-    characterImage: '/assets/characters/oscar.webp',
-    characterImagePosition: 'upper',
+    characterImage: '/assets/players/astonxato.webp',
+    characterImagePosition: 'portrait',
+    isPlayerPhoto: true,
     skillName: 'VALIANT DASH',
     skillIcon: '/assets/characters/oscar_skill.webp',
     skillDescription:
@@ -127,8 +129,9 @@ export const ROSTER_PLAYERS: PlayerProfile[] = [
     isIgl: true,
     selectedCharacter: 'RAFAEL',
     characterArchetype: 'Silent Marksman · Tactical Commander',
-    characterImage: '/assets/characters/rafael.webp',
-    characterImagePosition: 'full',
+    characterImage: '/assets/players/trp_blian7.webp',
+    characterImagePosition: 'portrait',
+    isPlayerPhoto: true,
     skillName: 'DEAD SILENT',
     skillIcon: '/assets/characters/rafael_skill.webp',
     skillDescription:

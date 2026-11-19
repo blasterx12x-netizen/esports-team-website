@@ -119,16 +119,28 @@ export function PlayerProfileModal({
               </div>
 
               {!imgError ? (
-                <div className="relative z-10 h-[290px] md:h-[410px] flex items-end justify-center">
+                <div
+                  className={`relative z-10 flex items-end justify-center ${
+                    player.isPlayerPhoto
+                      ? 'mt-10 rounded-xl overflow-hidden bg-black h-[290px] md:h-[400px]'
+                      : 'h-[290px] md:h-[410px]'
+                  }`}
+                >
                   <img
                     src={player.characterImage}
-                    alt={`${player.selectedCharacter} official Free Fire character render`}
+                    alt={
+                      player.isPlayerPhoto
+                        ? `${player.ign} official player portrait`
+                        : `${player.selectedCharacter} official Free Fire character render`
+                    }
                     referrerPolicy="no-referrer"
                     onError={() => setImgError(true)}
                     className={`w-auto max-w-full ${
                       player.characterImagePosition === 'full'
                         ? 'h-[116%] object-contain object-top translate-y-[8%]'
-                        : 'h-full object-contain object-bottom'
+                        : player.characterImagePosition === 'portrait'
+                          ? 'h-full object-contain object-top'
+                          : 'h-full object-contain object-bottom'
                     }`}
                   />
                 </div>
